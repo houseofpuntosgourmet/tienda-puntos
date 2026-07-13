@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { errorHandler } from './middleware/errorHandler';
+import logger from './utils/logger';
 
 dotenv.config();
 
@@ -14,6 +16,11 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// Error handler (must be last)
+app.use(errorHandler);
+
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });
+
+export default app;
