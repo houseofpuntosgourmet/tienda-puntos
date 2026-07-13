@@ -1,6 +1,7 @@
 import prisma from '../config/database';
 import { clienteService } from './clienteService';
 import logger from '../utils/logger';
+import { notificacionService } from './notificacionService';
 
 export class PuntosService {
   async obtenerReglaActiva() {
@@ -55,6 +56,12 @@ export class PuntosService {
 
       // Update cliente points
       await clienteService.actualizarPuntos(clienteId, puntosDespues);
+
+      // Trigger notification
+      notificacionService.encolarNotificacion('puntos_ganados', clienteId, {
+        puntos: puntosAsignados,
+        puntosActuales: puntosDespues,
+      });
 
       logger.info(
         `Points assigned to cliente ${clienteId}: +${puntosAsignados}`

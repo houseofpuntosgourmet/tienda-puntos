@@ -1,6 +1,7 @@
 import prisma from '../config/database';
 import { Cliente } from '../models/types';
 import logger from '../utils/logger';
+import { notificacionService } from './notificacionService';
 
 export class ClienteService {
   async registroCliente(datos: {
@@ -21,6 +22,10 @@ export class ClienteService {
         estado: 'activo',
       },
     });
+
+    // Trigger notification
+    notificacionService.encolarNotificacion('registro', cliente.id);
+
     logger.info(`Cliente registered: ${cliente.id}`);
     return cliente as Cliente;
   }

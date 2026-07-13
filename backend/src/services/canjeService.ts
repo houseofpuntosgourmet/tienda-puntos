@@ -2,6 +2,7 @@ import prisma from '../config/database';
 import { clienteService } from './clienteService';
 import { premioService } from './premioService';
 import logger from '../utils/logger';
+import { notificacionService } from './notificacionService';
 
 export class CanjeService {
   async solicitarCanje(clienteId: string, premioId: string) {
@@ -47,6 +48,9 @@ export class CanjeService {
       // Update cliente points
       await clienteService.actualizarPuntos(clienteId, transaccion.puntosDespues);
 
+      // Trigger notification
+      notificacionService.encolarNotificacion('canje_solicitado', clienteId);
+
       logger.info(`Canje requested: ${canje.id}, cliente: ${clienteId}, premio: ${premioId}`);
       return canje;
     } catch (error) {
@@ -60,6 +64,10 @@ export class CanjeService {
       where: { id: canjeId },
       data: { estado: 'completado' },
     });
+
+    // Trigger notification
+    notificacionService.encolarNotificacion('canje_completado', canje.clienteId);
+
     logger.info(`Canje completed: ${canjeId}`);
     return canje;
   }

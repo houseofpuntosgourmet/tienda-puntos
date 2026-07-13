@@ -14,6 +14,7 @@ import premiosRoutes from './routes/premios';
 import canjesRoutes from './routes/canjes';
 import { errorHandler } from './middleware/errorHandler';
 import logger from './utils/logger';
+import { initCumpleañosJob } from './jobs/cumpleañosJob';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -50,5 +51,8 @@ app.use(errorHandler);
 app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
 });
+
+// Initialize scheduled jobs
+initCumpleañosJob();
 
 export default app;
