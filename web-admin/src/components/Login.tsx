@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../api'
 
 interface LoginProps {
   onLogin: (token: string, usuario: any) => void
@@ -17,7 +17,7 @@ export default function Login({ onLogin }: LoginProps) {
     setLoading(true)
 
     try {
-      const response = await axios.post('/api/auth/admin/login', {
+      const response = await api.post('/api/auth/admin/login', {
         email,
         password,
       })
