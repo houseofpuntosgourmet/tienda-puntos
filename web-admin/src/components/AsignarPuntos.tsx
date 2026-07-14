@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../api'
 import ClienteSearch from './ClienteSearch'
 
 interface AsignarPuntosProps {
@@ -34,13 +34,13 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
     if (!value || !clienteSeleccionado) return
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         '/api/transacciones/calcular-puntos',
         { monto: parseFloat(value) },
         { headers: { Authorization: `Bearer ${token}` } }
       )
-      setPuntosCalculados(response.data.data.puntosCalculados)
-      setReglaActiva(response.data.data.regla)
+      setPuntosCalculados(response.data.puntosCalculados)
+      setReglaActiva(response.data.regla)
     } catch (err) {
       setPuntosCalculados(0)
     }

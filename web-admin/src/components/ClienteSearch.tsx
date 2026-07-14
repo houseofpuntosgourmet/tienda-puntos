@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../api'
 
 interface ClienteSearchProps {
   token: string
@@ -31,11 +31,11 @@ export default function ClienteSearch({ token }: ClienteSearchProps) {
 
     setLoading(true)
     try {
-      const response = await axios.get('/api/clientes', {
+      const response = await api.get('/api/clientes', {
         params: { search: searchTerm },
         headers: { Authorization: `Bearer ${token}` },
       })
-      setResults(response.data.data)
+      setResults(response.data)
       setSearched(true)
     } catch (err) {
       setResults([])
