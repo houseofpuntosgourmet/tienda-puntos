@@ -225,62 +225,63 @@ export default function Dashboard({ token }: DashboardProps) {
 
                 {/* Expanded Details */}
                 {expandedId === cliente.id && (
-                  <div className="px-4 py-4 bg-gray-50 border-t border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <div className="text-xs font-semibold text-gray-600">DNI</div>
-                      <div className="text-sm text-gray-900">{cliente.dni}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-gray-600">Email</div>
-                      <div className="text-sm text-gray-900">{cliente.email || '—'}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-gray-600">WhatsApp</div>
-                      <div className="text-sm text-gray-900">{cliente.whatsapp}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-gray-600">Estado</div>
-                      <div className="text-sm text-gray-900">{cliente.estado}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-gray-600">Puntos Actuales</div>
-                      <div className="text-lg font-bold text-blue-600">{cliente.puntosActuales}</div>
-                    </div>
-                    <div>
-                      <div className="text-xs font-semibold text-gray-600">Registrado</div>
-                      <div className="text-sm text-gray-900">
-                        {new Date(cliente.fechaRegistro).toLocaleDateString()}
+                  <>
+                    <div className="px-4 py-4 bg-gray-50 border-t border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <div className="text-xs font-semibold text-gray-600">DNI</div>
+                        <div className="text-sm text-gray-900">{cliente.dni}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-gray-600">Email</div>
+                        <div className="text-sm text-gray-900">{cliente.email || '—'}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-gray-600">WhatsApp</div>
+                        <div className="text-sm text-gray-900">{cliente.whatsapp}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-gray-600">Estado</div>
+                        <div className="text-sm text-gray-900">{cliente.estado}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-gray-600">Puntos Actuales</div>
+                        <div className="text-lg font-bold text-blue-600">{cliente.puntosActuales}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-gray-600">Registrado</div>
+                        <div className="text-sm text-gray-900">
+                          {new Date(cliente.fechaRegistro).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="text-xs font-semibold text-gray-600">Cumpleaños</div>
+                        <div className="text-sm text-gray-900">
+                          {cliente.cumpleaños ? new Date(cliente.cumpleaños).toLocaleDateString() : '—'}
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <div className="text-xs font-semibold text-gray-600">Cumpleaños</div>
-                      <div className="text-sm text-gray-900">
-                        {cliente.cumpleaños ? new Date(cliente.cumpleaños).toLocaleDateString() : '—'}
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Premios Disponibles */}
-                  {getPremiosDisponibles(cliente.puntosActuales).length > 0 && (
-                    <div className="px-4 py-4 bg-yellow-50 border-t border-yellow-200">
-                      <div className="text-sm font-bold text-yellow-800 mb-3">🎁 Premios Disponibles</div>
-                      <div className="space-y-2">
-                        {getPremiosDisponibles(cliente.puntosActuales).map((premio) => (
-                          <div
-                            key={premio.id}
-                            className="bg-white p-3 rounded border border-yellow-200"
-                          >
-                            <div className="font-semibold text-gray-900">{premio.nombre}</div>
-                            <div className="text-xs text-gray-600">{premio.descripcion || '—'}</div>
-                            <div className="text-xs text-yellow-700 mt-1">
-                              Requiere: <strong>{premio.puntosRequeridos} puntos</strong> (Tiene:{' '}
-                              <strong>{cliente.puntosActuales}</strong>)
+                    {getPremiosDisponibles(cliente.puntosActuales).length > 0 && (
+                      <div className="px-4 py-4 bg-yellow-50 border-t border-yellow-200">
+                        <div className="text-sm font-bold text-yellow-800 mb-3">🎁 Premios Disponibles</div>
+                        <div className="space-y-2">
+                          {getPremiosDisponibles(cliente.puntosActuales).map((premio) => (
+                            <div
+                              key={premio.id}
+                              className="bg-white p-3 rounded border border-yellow-200"
+                            >
+                              <div className="font-semibold text-gray-900">{premio.nombre}</div>
+                              <div className="text-xs text-gray-600">{premio.descripcion || '—'}</div>
+                              <div className="text-xs text-yellow-700 mt-1">
+                                Requiere: <strong>{premio.puntosRequeridos} puntos</strong> (Tiene:{' '}
+                                <strong>{cliente.puntosActuales}</strong>)
+                              </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </>
                 )}
               </div>
             ))}
