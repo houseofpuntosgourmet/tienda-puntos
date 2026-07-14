@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import Login from './components/Login'
 import Dashboard from './pages/Dashboard'
 import AsignarPuntos from './components/AsignarPuntos'
+import ReglasCRUD from './components/ReglasCRUD'
 import PremiosCRUD from './components/PremiosCRUD'
 import CanjesPendientes from './components/CanjesPendientes'
 import Reportes from './components/Reportes'
 
-type Page = 'login' | 'dashboard' | 'asignar-puntos' | 'premios' | 'canjes' | 'reportes'
+type Page = 'login' | 'dashboard' | 'asignar-puntos' | 'reglas' | 'premios' | 'canjes' | 'reportes'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('login')
@@ -94,6 +95,16 @@ function App() {
               Asignar Puntos
             </button>
             <button
+              onClick={() => setCurrentPage('reglas')}
+              className={`px-4 py-3 text-sm font-medium ${
+                currentPage === 'reglas'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-700 hover:text-gray-900'
+              }`}
+            >
+              Reglas de Puntos
+            </button>
+            <button
               onClick={() => setCurrentPage('premios')}
               className={`px-4 py-3 text-sm font-medium ${
                 currentPage === 'premios'
@@ -131,6 +142,7 @@ function App() {
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {currentPage === 'dashboard' && <Dashboard token={token} />}
         {currentPage === 'asignar-puntos' && <AsignarPuntos token={token} />}
+        {currentPage === 'reglas' && <ReglasCRUD token={token} />}
         {currentPage === 'premios' && <PremiosCRUD token={token} />}
         {currentPage === 'canjes' && <CanjesPendientes token={token} />}
         {currentPage === 'reportes' && <Reportes token={token} />}
