@@ -23,6 +23,7 @@ interface ReglaActiva {
 export default function AsignarPuntos({ token }: AsignarPuntosProps) {
   const [clienteSeleccionado, setClienteSeleccionado] = useState<Cliente | null>(null)
   const [monto, setMonto] = useState('')
+  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0])
   const [puntosCalculados, setPuntosCalculados] = useState(0)
   const [reglaActiva, setReglaActiva] = useState<ReglaActiva | null>(null)
   const [loading, setLoading] = useState(false)
@@ -41,7 +42,7 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
     setSuccess('')
 
     try {
-      await api.post(
+      const response = await api.post(
         '/api/transacciones',
         {
           clienteId: clienteSeleccionado.id,
@@ -51,9 +52,14 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
         { headers: { Authorization: `Bearer ${token}` } }
       )
 
-      setSuccess(`Transacción registrada para ${clienteSeleccionado.nombre}`)
-      setClienteSeleccionado(null)
+      const { puntosAntes, puntosDespues } = response.data
+      setSuccess(`✓ Puntos actualizados: ${puntosAntes} → ${puntosDespues}`)
+      setClienteSeleccionado({
+        ...clienteSeleccionado,
+        puntosActuales: puntosDespues
+      })
       setMonto('')
+      setFecha(new Date().toISOString().split('T')[0])
       setPuntosCalculados(0)
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al asignar puntos')
@@ -96,18 +102,33 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
           )}
         </div>
 
-        {/* Amount Input */}
-        <div className="mb-6 pb-6 border-b">
-          <h3 className="text-sm font-semibold text-gray-700 mb-3">Paso 2: Ingresa Monto</h3>
-          <input
-            type="number"
-            value={monto}
-            onChange={(e) => setMonto(e.target.value)}
-            placeholder="Ingresa el monto..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-            step="0.01"
-            disabled={!clienteSeleccionado}
-          />
+        {/* Date and Amount Input */}
+        <div className="mb-6 pb-6 border-b space-y-4">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3">Paso 2: Ingresa Fecha y Monto</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm text-gray-600 mb-2">Fecha</label>
+              <input
+                type="date"
+                value={fecha}
+                onChange={(e) => setFecha(e.target.value)}
+                disabled={!clienteSeleccionado}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            <div>
+              <label className="block text-sm text-gray-600 mb-2">Monto Consumido ($)</label>
+              <input
+                type="text"
+                inputMode="decimal"
+                value={monto}
+                onChange={(e) => setMonto(e.target.value.replace(/[^0-9.]/g, ''))}
+                placeholder="0.00"
+                disabled={!clienteSeleccionado}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Action Button */}
