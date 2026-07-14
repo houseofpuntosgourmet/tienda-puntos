@@ -630,3 +630,5 @@
 {"level":"info","message":"Transaction created: cmrkydhsy00039gifl2qsmu0p, Cliente: cmrkydhjq00029gifq5srw62a, Puntos: 10","timestamp":"2026-07-14T17:56:33.272Z"}
 {"level":"info","message":"WhatsApp sent to +5491111111111: 🎉 Ganaste 10 puntos. Total actual: 10","timestamp":"2026-07-14T17:56:33.274Z"}
 {"level":"info","message":"Notification sent: puntos_ganados to +5491111111111","timestamp":"2026-07-14T17:56:33.274Z"}
+{"level":"info","message":"Birthday job initialized (9:00 AM daily)","timestamp":"2026-07-14T19:02:38.255Z"}
+{"level":"info","message":"Server running on port 3001","timestamp":"2026-07-14T19:02:38.260Z"}
