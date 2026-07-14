@@ -8,8 +8,7 @@ interface DashboardProps {
 interface Cliente {
   id: string
   nombre: string
-  email: string
-  telefono: string
+  email?: string
   whatsapp: string
   dni: string
   puntosActuales: number
@@ -28,7 +27,7 @@ export default function Dashboard({ token }: DashboardProps) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [showCreateForm, setShowCreateForm] = useState(false)
-  const [formData, setFormData] = useState({ nombre: '', whatsapp: '', dni: '', email: '' })
+  const [formData, setFormData] = useState({ nombre: '', whatsapp: '', dni: '', email: '', cumpleaños: '' })
   const [creating, setCreating] = useState(false)
   const [expandedId, setExpandedId] = useState<string | null>(null)
 
@@ -57,10 +56,17 @@ export default function Dashboard({ token }: DashboardProps) {
     e.preventDefault()
     setCreating(true)
     try {
-      await api.post('/api/clientes', formData, {
+      const payload = {
+        nombre: formData.nombre,
+        whatsapp: formData.whatsapp,
+        dni: formData.dni,
+        email: formData.email || undefined,
+        cumpleaños: formData.cumpleaños ? new Date(formData.cumpleaños).toISOString() : undefined,
+      }
+      await api.post('/api/clientes', payload, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      setFormData({ nombre: '', whatsapp: '', dni: '', email: '' })
+      setFormData({ nombre: '', whatsapp: '', dni: '', email: '', cumpleaños: '' })
       setShowCreateForm(false)
       await fetchData()
     } catch (err: any) {
@@ -138,6 +144,13 @@ export default function Dashboard({ token }: DashboardProps) {
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
                 className="px-3 py-2 border border-gray-300 rounded-lg"
               />
+              <input
+                type="date"
+                placeholder="Cumpleaños (opcional)"
+                value={formData.cumpleaños}
+                onChange={(e) => setFormData({...formData, cumpleaños: e.target.value})}
+                className="px-3 py-2 border border-gray-300 rounded-lg"
+              />
             </div>
             <button
               type="submit"
@@ -189,8 +202,8 @@ export default function Dashboard({ token }: DashboardProps) {
                       <div className="text-sm text-gray-900">{cliente.email || '—'}</div>
                     </div>
                     <div>
-                      <div className="text-xs font-semibold text-gray-600">Teléfono</div>
-                      <div className="text-sm text-gray-900">{cliente.telefono || '—'}</div>
+                      <div className="text-xs font-semibold text-gray-600">WhatsApp</div>
+                      <div className="text-sm text-gray-900">{cliente.whatsapp}</div>
                     </div>
                     <div>
                       <div className="text-xs font-semibold text-gray-600">Estado</div>
@@ -206,14 +219,12 @@ export default function Dashboard({ token }: DashboardProps) {
                         {new Date(cliente.fechaRegistro).toLocaleDateString()}
                       </div>
                     </div>
-                    {cliente.cumpleaños && (
-                      <div>
-                        <div className="text-xs font-semibold text-gray-600">Cumpleaños</div>
-                        <div className="text-sm text-gray-900">
-                          {new Date(cliente.cumpleaños).toLocaleDateString()}
-                        </div>
+                    <div>
+                      <div className="text-xs font-semibold text-gray-600">Cumpleaños</div>
+                      <div className="text-sm text-gray-900">
+                        {cliente.cumpleaños ? new Date(cliente.cumpleaños).toLocaleDateString() : '—'}
                       </div>
-                    )}
+                    </div>
                   </div>
                 )}
               </div>
