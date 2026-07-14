@@ -29,22 +29,6 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const handleMontoChange = async (value: string) => {
-    setMonto(value)
-    if (!value || !clienteSeleccionado) return
-
-    try {
-      const response = await api.post(
-        '/api/transacciones/calcular-puntos',
-        { monto: parseFloat(value) },
-        { headers: { Authorization: `Bearer ${token}` } }
-      )
-      setPuntosCalculados(response.data.puntosCalculados)
-      setReglaActiva(response.data.regla)
-    } catch (err) {
-      setPuntosCalculados(0)
-    }
-  }
 
   const handleAsignar = async () => {
     if (!clienteSeleccionado || !monto) {
@@ -67,11 +51,10 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
         { headers: { Authorization: `Bearer ${token}` } }
       )
 
-      setSuccess(`Se asignaron ${puntosCalculados} puntos a ${clienteSeleccionado.nombre}`)
+      setSuccess(`Transacción registrada para ${clienteSeleccionado.nombre}`)
       setClienteSeleccionado(null)
       setMonto('')
       setPuntosCalculados(0)
-      setReglaActiva(null)
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al asignar puntos')
     } finally {
@@ -119,33 +102,13 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
           <input
             type="number"
             value={monto}
-            onChange={(e) => handleMontoChange(e.target.value)}
+            onChange={(e) => setMonto(e.target.value)}
             placeholder="Ingresa el monto..."
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
             step="0.01"
             disabled={!clienteSeleccionado}
           />
         </div>
-
-        {/* Calculation Summary */}
-        {monto && puntosCalculados > 0 && (
-          <div className="mb-6 pb-6 border-b bg-gray-50 p-4 rounded">
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">Resumen de Cálculo</h3>
-            {reglaActiva && (
-              <>
-                <p className="text-sm mb-2">
-                  <strong>Regla Activa:</strong> {reglaActiva.nombre}
-                </p>
-                <p className="text-sm mb-2">
-                  <strong>Factor:</strong> {reglaActiva.factor}x
-                </p>
-              </>
-            )}
-            <p className="text-lg font-bold text-blue-600">
-              Puntos a asignar: {puntosCalculados}
-            </p>
-          </div>
-        )}
 
         {/* Action Button */}
         <button
