@@ -1,0 +1,147 @@
+import React, { useState } from 'react';
+import { View, TextInput, TouchableOpacity, Text, Alert, ActivityIndicator, StyleSheet } from 'react-native';
+import { useRouter, Link } from 'expo-router';
+import { useAuth } from '@/hooks/useAuth';
+
+export default function LoginScreen() {
+  const router = useRouter();
+  const { login } = useAuth();
+  const [whatsapp, setWhatsapp] = useState('');
+  const [dni, setDni] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!whatsapp || !dni) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await login(whatsapp, dni);
+      router.replace('/(tabs)');
+    } catch (error: any) {
+      Alert.alert('Login Failed', error.message || 'Please check your WhatsApp and DNI');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <Text style={styles.title}>Tienda Puntos</Text>
+        <Text style={styles.subtitle}>Ingresa a tu cuenta</Text>
+
+        <TextInput
+          style={styles.input}
+          placeholder="WhatsApp"
+          value={whatsapp}
+          onChangeText={setWhatsapp}
+          keyboardType="phone-pad"
+          editable={!loading}
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="DNI"
+          value={dni}
+          onChangeText={setDni}
+          keyboardType="number-pad"
+          editable={!loading}
+        />
+
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleLogin}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+          )}
+        </TouchableOpacity>
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>¿No tienes cuenta? </Text>
+          <Link href="/(auth)/register" asChild>
+            <TouchableOpacity>
+              <Text style={styles.linkText}>Registrarse</Text>
+            </TouchableOpacity>
+          </Link>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+    justifyContent: 'center',
+    padding: 20,
+  },
+  content: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'center',
+    color: '#333',
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 16,
+    fontSize: 16,
+    backgroundColor: '#f9f9f9',
+  },
+  button: {
+    backgroundColor: '#007AFF',
+    borderRadius: 8,
+    padding: 14,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  footerText: {
+    color: '#666',
+    fontSize: 14,
+  },
+  linkText: {
+    color: '#007AFF',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+});
