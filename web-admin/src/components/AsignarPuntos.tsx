@@ -57,12 +57,11 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
     setSuccess('')
 
     try {
-      await axios.post(
+      await api.post(
         '/api/transacciones',
         {
           clienteId: clienteSeleccionado.id,
-          monto: parseFloat(monto),
-          tipo: 'compra',
+          montoCompra: parseFloat(monto),
           descripcion: 'Asignación manual de puntos',
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -100,7 +99,7 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
         {/* Cliente Selection */}
         <div className="mb-6 pb-6 border-b">
           <h3 className="text-sm font-semibold text-gray-700 mb-3">Paso 1: Selecciona Cliente</h3>
-          <ClienteSearch token={token} />
+          <ClienteSearch token={token} onSelectCliente={setClienteSeleccionado} />
 
           {clienteSeleccionado && (
             <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded">

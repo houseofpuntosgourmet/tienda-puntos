@@ -3,6 +3,7 @@ import api from '../api'
 
 interface ClienteSearchProps {
   token: string
+  onSelectCliente?: (cliente: Cliente) => void
 }
 
 interface Cliente {
@@ -15,7 +16,7 @@ interface Cliente {
   fechaRegistro: string
 }
 
-export default function ClienteSearch({ token }: ClienteSearchProps) {
+export default function ClienteSearch({ token, onSelectCliente }: ClienteSearchProps) {
   const [searchTerm, setSearchTerm] = useState('')
   const [results, setResults] = useState<Cliente[]>([])
   const [loading, setLoading] = useState(false)
@@ -81,6 +82,7 @@ export default function ClienteSearch({ token }: ClienteSearchProps) {
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">DNI</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Puntos</th>
                 <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Registro</th>
+                <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">Acción</th>
               </tr>
             </thead>
             <tbody>
@@ -93,6 +95,16 @@ export default function ClienteSearch({ token }: ClienteSearchProps) {
                   <td className="px-6 py-4 text-sm font-semibold text-blue-600">{cliente.puntosActuales}</td>
                   <td className="px-6 py-4 text-sm text-gray-600">
                     {new Date(cliente.fechaRegistro).toLocaleDateString()}
+                  </td>
+                  <td className="px-6 py-4 text-sm">
+                    {onSelectCliente && (
+                      <button
+                        onClick={() => onSelectCliente(cliente)}
+                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded text-xs"
+                      >
+                        Seleccionar
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))}
