@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import api from '../api'
 
 interface PremioFormProps {
   token: string
@@ -12,16 +12,18 @@ export default function PremioForm({ token, premio, onSave, onCancel }: PremioFo
   const [nombre, setNombre] = useState('')
   const [descripcion, setDescripcion] = useState('')
   const [puntosRequeridos, setPuntosRequeridos] = useState('')
-  const [valor, setValor] = useState('')
+  const [vigencia, setVigencia] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
   useEffect(() => {
     if (premio) {
       setNombre(premio.nombre)
-      setDescripcion(premio.descripcion)
+      setDescripcion(premio.descripcion || '')
       setPuntosRequeridos(premio.puntosRequeridos.toString())
-      setValor(premio.valor.toString())
+      if (premio.vigencia) {
+        setVigencia(new Date(premio.vigencia).toISOString().split('T')[0])
+      }
     }
   }, [premio])
 
@@ -31,21 +33,24 @@ export default function PremioForm({ token, premio, onSave, onCancel }: PremioFo
     setLoading(true)
 
     try {
-      const data = {
+      const data: any = {
         nombre,
         descripcion,
         puntosRequeridos: parseInt(puntosRequeridos),
-        valor: parseFloat(valor),
+      }
+
+      if (vigencia) {
+        data.vigencia = new Date(vigencia).toISOString()
       }
 
       if (premio) {
         // Edit
-        await axios.put(`/api/premios/${premio.id}`, data, {
+        await api.put(`/api/premios/${premio.id}`, data, {
           headers: { Authorization: `Bearer ${token}` },
         })
       } else {
         // Create
-        await axios.post('/api/premios', data, {
+        await api.post('/api/premios', data, {
           headers: { Authorization: `Bearer ${token}` },
         })
       }
@@ -103,20 +108,21 @@ export default function PremioForm({ token, premio, onSave, onCancel }: PremioFo
               type="number"
               value={puntosRequeridos}
               onChange={(e) => setPuntosRequeridos(e.target.value)}
+              placeholder="Ej: 100"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Valor</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Vigencia (opcional)
+            </label>
             <input
-              type="number"
-              value={valor}
-              onChange={(e) => setValor(e.target.value)}
+              type="date"
+              value={vigencia}
+              onChange={(e) => setVigencia(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-              step="0.01"
-              required
             />
           </div>
         </div>

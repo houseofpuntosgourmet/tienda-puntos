@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import api from '../api'
 import PremioForm from './PremioForm'
 
 interface PremiosCRUDProps {
@@ -9,10 +9,11 @@ interface PremiosCRUDProps {
 interface Premio {
   id: string
   nombre: string
-  descripcion: string
+  descripcion?: string
   puntosRequeridos: number
-  valor: number
+  vigencia?: string
   activo: boolean
+  createdAt: string
 }
 
 export default function PremiosCRUD({ token }: PremiosCRUDProps) {
@@ -28,12 +29,15 @@ export default function PremiosCRUD({ token }: PremiosCRUDProps) {
 
   const fetchPremios = async () => {
     try {
-      const response = await axios.get('/api/premios', {
+      const response = await api.get('/api/premios', {
         headers: { Authorization: `Bearer ${token}` },
       })
-      setPremios(response.data.data)
+      const premiosList = Array.isArray(response.data) ? response.data : response.data.data || []
+      setPremios(premiosList)
+      setError('')
     } catch (err: any) {
       setError(err.response?.data?.message || 'Error al cargar premios')
+      setPremios([])
     } finally {
       setLoading(false)
     }
@@ -47,7 +51,7 @@ export default function PremiosCRUD({ token }: PremiosCRUDProps) {
 
   const handleDesactivar = async (id: string) => {
     try {
-      await axios.patch(
+      await api.patch(
         `/api/premios/${id}`,
         { activo: false },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -113,7 +117,7 @@ export default function PremiosCRUD({ token }: PremiosCRUDProps) {
                     Puntos Requeridos
                   </th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
-                    Valor
+                    Vigencia
                   </th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-700">
                     Estado
@@ -132,11 +136,11 @@ export default function PremiosCRUD({ token }: PremiosCRUDProps) {
                     <td className="px-6 py-4 text-sm text-gray-600">
                       {premio.descripcion}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-6 py-4 text-sm font-semibold text-blue-600">
                       {premio.puntosRequeridos}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
-                      ${premio.valor.toFixed(2)}
+                      {premio.vigencia ? new Date(premio.vigencia).toLocaleDateString() : '—'}
                     </td>
                     <td className="px-6 py-4 text-sm">
                       <span
