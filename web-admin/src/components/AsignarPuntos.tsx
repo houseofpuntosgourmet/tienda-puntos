@@ -32,8 +32,13 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
 
 
   const handleAsignar = async () => {
-    if (!clienteSeleccionado || !monto) {
-      setError('Por favor selecciona un cliente e ingresa un monto')
+    if (!clienteSeleccionado) {
+      setError('Por favor selecciona un cliente')
+      return
+    }
+
+    if (!monto || monto === '.' || isNaN(parseFloat(monto)) || parseFloat(monto) <= 0) {
+      setError('Ingresa un monto válido (número mayor a 0)')
       return
     }
 
@@ -42,11 +47,12 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
     setSuccess('')
 
     try {
+      const montoNumero = parseFloat(monto)
       const response = await api.post(
         '/api/transacciones',
         {
           clienteId: clienteSeleccionado.id,
-          montoCompra: parseFloat(monto),
+          montoCompra: montoNumero,
           descripcion: 'Asignación manual de puntos',
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -122,7 +128,17 @@ export default function AsignarPuntos({ token }: AsignarPuntosProps) {
                 type="text"
                 inputMode="decimal"
                 value={monto}
-                onChange={(e) => setMonto(e.target.value.replace(/[^0-9.]/g, ''))}
+                onChange={(e) => {
+                  const valor = e.target.value
+                  // Solo permitir dígitos y un punto
+                  if (valor === '' || /^\d*\.?\d*$/.test(valor)) {
+                    // Evitar múltiples puntos
+                    const puntoCount = (valor.match(/\./g) || []).length
+                    if (puntoCount <= 1) {
+                      setMonto(valor)
+                    }
+                  }
+                }}
                 placeholder="0.00"
                 disabled={!clienteSeleccionado}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
