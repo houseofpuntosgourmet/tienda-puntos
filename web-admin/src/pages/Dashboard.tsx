@@ -69,11 +69,12 @@ export default function Dashboard({ token }: DashboardProps) {
     }
   }
 
-  const getPremiosDisponibles = (puntosCliente: number) => {
+  const getPremiosDisponibles = (puntosCliente: number): Premio[] => {
+    if (!premios || premios.length === 0) return []
     return premios.filter((p) => p.activo && puntosCliente >= p.puntosRequeridos)
   }
 
-  const tieneDerechoPremio = (puntosCliente: number) => {
+  const tieneDerechoPremio = (puntosCliente: number): boolean => {
     return getPremiosDisponibles(puntosCliente).length > 0
   }
 
