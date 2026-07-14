@@ -34,7 +34,7 @@ export default function ReglasCRUD({ token }: ReglasCRUDProps) {
 
   const fetchReglas = async () => {
     try {
-      const response = await api.get('/api/reglas', {
+      const response = await api.get('/api/admin/reglas', {
         headers: { Authorization: `Bearer ${token}` },
       })
       const reglasList = Array.isArray(response.data) ? response.data : response.data.data || []
@@ -66,11 +66,11 @@ export default function ReglasCRUD({ token }: ReglasCRUDProps) {
       }
 
       if (reglaSeleccionada) {
-        await api.put(`/api/reglas/${reglaSeleccionada.id}`, payload, {
+        await api.put(`/api/admin/reglas/${reglaSeleccionada.id}`, payload, {
           headers: { Authorization: `Bearer ${token}` },
         })
       } else {
-        await api.post('/api/reglas', payload, {
+        await api.post('/api/admin/reglas', payload, {
           headers: { Authorization: `Bearer ${token}` },
         })
       }
@@ -87,7 +87,7 @@ export default function ReglasCRUD({ token }: ReglasCRUDProps) {
   const handleActivar = async (id: string) => {
     try {
       await api.post(
-        `/api/reglas/${id}/activar`,
+        `/api/admin/reglas/${id}/activar`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       )
@@ -99,7 +99,7 @@ export default function ReglasCRUD({ token }: ReglasCRUDProps) {
 
   const handleDesactivar = async (id: string) => {
     try {
-      await api.delete(`/api/reglas/${id}`, {
+      await api.delete(`/api/admin/reglas/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       await fetchReglas()
