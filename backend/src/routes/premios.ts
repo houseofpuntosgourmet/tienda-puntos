@@ -11,6 +11,7 @@ const premioSchema = z.object({
   nombre: z.string().min(2),
   descripcion: z.string().optional(),
   puntosRequeridos: z.number().positive(),
+  valor: z.number().optional(),
   vigencia: z.string().datetime().optional(),
   activo: z.boolean().optional(),
 }).passthrough();

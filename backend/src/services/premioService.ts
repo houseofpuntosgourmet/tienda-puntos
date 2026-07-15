@@ -7,12 +7,14 @@ export class PremioService {
     nombre: string;
     descripcion?: string;
     puntosRequeridos: number;
+    valor?: number;
     vigencia?: string;
   }): Promise<Premio> {
     const premioData: any = {
       nombre: datos.nombre,
       puntosRequeridos: datos.puntosRequeridos,
       activo: true,
+      valor: datos.valor || 0,
     };
 
     if (datos.descripcion) {
