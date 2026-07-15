@@ -70,7 +70,7 @@ model Premio {
   nombre          String
   descripcion     String?
   puntosRequeridos Int
-  valor           Int?  // monetary value of prize
+  valor           Int  @default(0)  // monetary value of prize
   vigencia        DateTime?  // prize expiration date
   activo          Boolean  @default(true)
   createdAt       DateTime @default(now())

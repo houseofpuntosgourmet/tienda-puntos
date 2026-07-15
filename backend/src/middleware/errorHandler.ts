@@ -33,8 +33,10 @@ export function errorHandler(
     });
   }
 
-  // Default error
+  // Errores Prisma u otros
   res.status(500).json({
-    error: 'Internal server error',
+    error: 'Error interno del servidor',
+    message: err.message || 'Desconocido',
+    type: err.constructor.name,
   });
 }
