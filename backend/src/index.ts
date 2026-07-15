@@ -60,8 +60,8 @@ app.use('/api/clientes', clientesRoutes);
 // Transacciones routes
 app.use('/api/transacciones', transaccionesRoutes);
 
-// Admin Reglas routes
-app.use('/api/admin/reglas', reglasRoutes);
+// Reglas routes
+app.use('/api/reglas', reglasRoutes);
 
 // Premios routes
 app.use('/api/premios', premiosRoutes);

@@ -12,7 +12,8 @@ const premioSchema = z.object({
   descripcion: z.string().optional(),
   puntosRequeridos: z.number().positive(),
   vigencia: z.string().datetime().optional(),
-});
+  activo: z.boolean().optional(),
+}).passthrough();
 
 // POST /api/premios - create prize (admin only)
 router.post('/', authMiddleware, adminOnly, async (req: Request, res: Response, next: NextFunction) => {

@@ -1,48 +1,57 @@
-import 'dotenv/config';
-import { PrismaClient } from '@prisma/client';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
-import bcryptjs from 'bcryptjs';
+import { PrismaClient } from "@prisma/client";
+import bcryptjs from "bcryptjs";
 
-const databaseUrl = process.env.DATABASE_URL || 'file:./dev.db';
-const adapter = new PrismaBetterSqlite3({ url: databaseUrl });
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClient();
 
 async function main() {
-  const hashedPassword = await bcryptjs.hash('password123', 10);
-  
-  const admin = await prisma.usuario.upsert({
-    where: { email: 'admin@test.com' },
-    update: {},
-    create: {
-      email: 'admin@test.com',
-      password: hashedPassword,
-      nombre: 'Admin Test',
-      rol: 'admin',
-      activo: true,
-    },
+  const adminHash = bcryptjs.hashSync("admin123", 10);
+  await prisma.usuario.create({
+    data: {
+      email: "admin@tiendapuntos.local",
+      password: adminHash,
+      nombre: "Admin",
+      rol: "admin",
+      activo: true
+    }
   });
-  console.log('Admin created:', admin);
 
-  const regla = await prisma.reglaPuntos.upsert({
-    where: { id: 'default' },
-    update: {},
-    create: {
-      id: 'default',
-      nombre: 'Regla por defecto',
-      descripcion: '1 punto cada $1000',
-      montoBase: 1000,
-      puntosOtorgados: 1,
-      activa: true,
-    },
+  await prisma.reglaPuntos.create({
+    data: {
+      nombre: "Standard",
+      montoBase: 9000,
+      puntosOtorgados: 10,
+      activa: true
+    }
   });
-  console.log('Rule created:', regla);
+
+  await prisma.premio.create({
+    data: {
+      nombre: "Wine Bottle",
+      puntosRequeridos: 100,
+      activo: true
+    }
+  });
+
+  await prisma.premio.create({
+    data: {
+      nombre: "20% Discount",
+      puntosRequeridos: 50,
+      activo: true
+    }
+  });
+
+  await prisma.cliente.create({
+    data: {
+      nombre: "Test Client",
+      whatsapp: "+541112345678",
+      dni: "12345678",
+      email: "test@example.com",
+      puntosActuales: 150
+    }
+  });
+
+  console.log("✅ Seed complete!");
+  await prisma.$disconnect();
 }
 
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+main().catch(e => { console.error(e); process.exit(1); });
