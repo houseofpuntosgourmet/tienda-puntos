@@ -4,7 +4,7 @@
   "buildCommand": "cd web-admin && npm run build",
   "outputDirectory": "web-admin/dist",
   "env": {
-    "BACKEND_URL": "@backend_url"
+    "BACKEND_URL": "https://tienda-puntos-backend.railway.app"
   },
   "functions": {
     "api/proxy.js": {
