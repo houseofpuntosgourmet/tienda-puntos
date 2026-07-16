@@ -4,7 +4,7 @@ import axios from 'axios'
 export default function RegistroCliente() {
   const [formData, setFormData] = useState({
     nombre: '',
-    whatsapp: '',
+    whatsapp: '549',
     dni: '',
     email: '',
     cumpleaños: '',
@@ -33,9 +33,12 @@ export default function RegistroCliente() {
       return
     }
 
-    // Validar formato WhatsApp (7-15 dígitos)
-    if (!/^\d{7,15}$/.test(formData.whatsapp)) {
-      setError('WhatsApp inválido. Debe contener entre 7 y 15 dígitos')
+    // Limpiar whatsapp (quitar espacios)
+    const whatsappLimpio = formData.whatsapp.replace(/\s/g, '')
+
+    // Validar que empiece con 549 y tenga 12-15 dígitos totales
+    if (!/^549\d{9,12}$/.test(whatsappLimpio)) {
+      setError('WhatsApp inválido. Debe ser: 549 + código de área + número (sin espacios en la validación)')
       return
     }
 
@@ -55,7 +58,7 @@ export default function RegistroCliente() {
     try {
       const payload: any = {
         nombre: formData.nombre,
-        whatsapp: formData.whatsapp,
+        whatsapp: whatsappLimpio,
         dni: formData.dni,
       }
 
@@ -68,7 +71,7 @@ export default function RegistroCliente() {
       setSuccess(response.data.mensaje || 'Registro completado exitosamente')
       setFormData({
         nombre: '',
-        whatsapp: '',
+        whatsapp: '549',
         dni: '',
         email: '',
         cumpleaños: '',
@@ -152,18 +155,18 @@ export default function RegistroCliente() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    WhatsApp *
+                    WhatsApp * (Argentina)
                   </label>
                   <input
                     type="tel"
                     name="whatsapp"
                     value={formData.whatsapp}
                     onChange={handleChange}
-                    placeholder="1141817703"
+                    placeholder="549 11 12345678"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                     required
                   />
-                  <p className="text-xs text-gray-500 mt-1">Sin espacios ni caracteres especiales</p>
+                  <p className="text-xs text-gray-500 mt-1">Empieza con 549. Ej: 549 11 12345678 o 54911234567</p>
                 </div>
 
                 <div>
