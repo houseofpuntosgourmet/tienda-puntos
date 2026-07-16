@@ -1,0 +1,5 @@
+{
+  "version": 2,
+  "buildCommand": "npm ci --prefix web-admin && npm run build --prefix web-admin",
+  "outputDirectory": "web-admin/dist"
+}
