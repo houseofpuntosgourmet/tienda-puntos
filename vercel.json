@@ -1,24 +1,24 @@
 {
   "version": 2,
-  "buildCommand": "cd web-admin && npm run build",
-  "outputDirectory": "web-admin/dist",
-  "env": {
-    "BACKEND_URL": "https://tienda-puntos-backend.railway.app"
-  },
-  "functions": {
-    "api/proxy.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/proxy.js",
-      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
+  "services": {
+    "web-admin": {
+      "root": "web-admin",
+      "path": "/",
+      "env": ["BACKEND_URL"],
+      "buildCommand": "npm run build",
+      "outputDirectory": "dist"
     },
-    {
-      "src": "^/(?!api/).*$",
-      "dest": "/index.html"
+    "backend": {
+      "root": "backend",
+      "path": "/api",
+      "env": ["DATABASE_URL", "JWT_SECRET", "NODE_ENV"],
+      "buildCommand": "npm run build"
     }
-  ]
+  },
+  "env": {
+    "BACKEND_URL": "https://tienda-puntos-backend.railway.app",
+    "DATABASE_URL": "@database_url",
+    "JWT_SECRET": "@jwt_secret",
+    "NODE_ENV": "production"
+  }
 }
