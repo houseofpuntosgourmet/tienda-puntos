@@ -3,3 +3,5 @@ dist/
 .env
 .env.local
 postgres_data/
+
+.vercel
