@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Login from './components/Login'
+import RegistroCliente from './components/RegistroCliente'
 import Dashboard from './pages/Dashboard'
 import AsignarPuntos from './components/AsignarPuntos'
 import ReglasCRUD from './components/ReglasCRUD'
@@ -8,7 +9,7 @@ import CanjesPendientes from './components/CanjesPendientes'
 import Reportes from './components/Reportes'
 import Administracion from './components/Administracion'
 
-type Page = 'login' | 'dashboard' | 'asignar-puntos' | 'reglas' | 'premios' | 'canjes' | 'reportes' | 'administracion'
+type Page = 'login' | 'registro' | 'dashboard' | 'asignar-puntos' | 'reglas' | 'premios' | 'canjes' | 'reportes' | 'administracion'
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>('login')
@@ -49,8 +50,24 @@ function App() {
     return <div className="flex items-center justify-center h-screen">Cargando...</div>
   }
 
-  if (!token) {
-    return <Login onLogin={handleLogin} />
+  if (!token && currentPage !== 'registro') {
+    return <Login onLogin={handleLogin} onRegistro={() => setCurrentPage('registro')} />
+  }
+
+  if (currentPage === 'registro') {
+    return (
+      <div>
+        <RegistroCliente />
+        <div className="text-center py-4">
+          <button
+            onClick={() => setCurrentPage('login')}
+            className="text-blue-500 hover:text-blue-700 text-sm"
+          >
+            ← Volver a Login de Admin
+          </button>
+        </div>
+      </div>
+    )
   }
 
   return (

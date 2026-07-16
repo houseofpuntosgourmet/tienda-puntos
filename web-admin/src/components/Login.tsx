@@ -3,9 +3,10 @@ import api from '../api'
 
 interface LoginProps {
   onLogin: (token: string, usuario: any) => void
+  onRegistro?: () => void
 }
 
-export default function Login({ onLogin }: LoginProps) {
+export default function Login({ onLogin, onRegistro }: LoginProps) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -73,6 +74,18 @@ export default function Login({ onLogin }: LoginProps) {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+
+        {onRegistro && (
+          <div className="mt-6 text-center">
+            <p className="text-gray-600 text-sm mb-2">¿No tienes cuenta?</p>
+            <button
+              onClick={onRegistro}
+              className="text-blue-500 hover:text-blue-700 font-medium text-sm"
+            >
+              Registrarse como Cliente →
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )

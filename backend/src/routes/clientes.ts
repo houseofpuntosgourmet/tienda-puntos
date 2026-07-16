@@ -8,6 +8,39 @@ import logger from '../utils/logger';
 
 const router = Router();
 
+// POST /api/clientes/registro - public client registration (no auth required)
+router.post('/registro', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const datos = registroClienteSchema.parse(req.body);
+    logger.info(`Public registration attempt: ${datos.whatsapp}`);
+
+    // Check if whatsapp already exists
+    const existente = await clienteService.buscarClientePorWhatsapp(datos.whatsapp);
+    if (existente) {
+      throw new AppError(409, 'Cliente con este WhatsApp ya está registrado');
+    }
+
+    const cumpleañosDate = datos.cumpleaños ? new Date(datos.cumpleaños) : undefined;
+
+    const cliente = await clienteService.registroCliente({
+      nombre: datos.nombre,
+      whatsapp: datos.whatsapp,
+      dni: datos.dni,
+      email: datos.email,
+      cumpleaños: cumpleañosDate,
+    });
+    logger.info(`New cliente registered (public): ${cliente.id}`);
+    res.status(201).json({
+      id: cliente.id,
+      nombre: cliente.nombre,
+      whatsapp: cliente.whatsapp,
+      mensaje: 'Registro exitoso. Bienvenido a la Tienda de Puntos!',
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // GET /api/clientes - search or list all
 router.get('/', authMiddleware, async (req: Request, res: Response, next: NextFunction) => {
   try {
