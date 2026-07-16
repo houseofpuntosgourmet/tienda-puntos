@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "public": true,
   "buildCommand": "cd web-admin && npm run build",
   "outputDirectory": "web-admin/dist",
   "env": {
@@ -21,5 +20,6 @@
       "src": "^/(?!api/).*$",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "experimentalServices": []
 }
