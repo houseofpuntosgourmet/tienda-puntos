@@ -1,24 +1,5 @@
 {
   "version": 2,
-  "services": {
-    "web-admin": {
-      "root": "web-admin",
-      "path": "/",
-      "env": ["BACKEND_URL"],
-      "buildCommand": "npm run build",
-      "outputDirectory": "dist"
-    },
-    "backend": {
-      "root": "backend",
-      "path": "/api",
-      "env": ["DATABASE_URL", "JWT_SECRET", "NODE_ENV"],
-      "buildCommand": "npm run build"
-    }
-  },
-  "env": {
-    "BACKEND_URL": "https://tienda-puntos-backend.railway.app",
-    "DATABASE_URL": "@database_url",
-    "JWT_SECRET": "@jwt_secret",
-    "NODE_ENV": "production"
-  }
+  "buildCommand": "cd web-admin && npm run build",
+  "outputDirectory": "web-admin/dist"
 }
