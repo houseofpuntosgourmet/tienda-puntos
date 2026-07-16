@@ -2,19 +2,21 @@ FROM node:24-alpine
 
 WORKDIR /app
 
-# Copy backend
-COPY backend/package*.json ./backend/
-COPY backend/prisma ./backend/prisma/
+# Copy entire repo
+COPY . .
 
 # Install backend deps
 WORKDIR /app/backend
-RUN npm ci
+RUN npm ci --legacy-peer-deps || npm ci
 
-# Build backend
-COPY backend/src ./src
-COPY backend/tsconfig.json ./
+# Build
 RUN npm run build
 
-# Start
+# Generate Prisma
+RUN npx prisma generate
+
+# Expose port
 EXPOSE 3001
+
+# Start
 CMD ["node", "dist/index.js"]
