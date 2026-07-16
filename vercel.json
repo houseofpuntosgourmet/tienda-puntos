@@ -1,5 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm --prefix web-admin run build",
-  "outputDirectory": "web-admin/dist"
+  "root": "web-admin",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist"
 }
