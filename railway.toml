@@ -8,4 +8,3 @@ restartPolicyMaxRetries = 5
 [env]
 NODE_ENV = "production"
 JWT_SECRET = "super-secret-key-change-this"
-PORT = "3001"
