@@ -6,8 +6,8 @@ CREATE TABLE "usuarios" (
     "nombre" TEXT NOT NULL,
     "rol" TEXT NOT NULL DEFAULT 'admin',
     "activo" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL
 );
 
 -- CreateTable
@@ -17,11 +17,11 @@ CREATE TABLE "clientes" (
     "whatsapp" TEXT NOT NULL,
     "dni" TEXT NOT NULL,
     "email" TEXT,
-    "cumpleaños" DATETIME,
+    "cumpleaños" TIMESTAMP(3),
     "puntosActuales" INTEGER NOT NULL DEFAULT 0,
     "estado" TEXT NOT NULL DEFAULT 'activo',
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL
 );
 
 -- CreateTable
@@ -34,7 +34,7 @@ CREATE TABLE "transacciones" (
     "puntosAntes" INTEGER NOT NULL,
     "puntosDespues" INTEGER NOT NULL,
     "descripcion" TEXT,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "transacciones_clienteId_fkey" FOREIGN KEY ("clienteId") REFERENCES "clientes" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -46,8 +46,8 @@ CREATE TABLE "reglas_puntos" (
     "montoBase" INTEGER NOT NULL,
     "puntosOtorgados" INTEGER NOT NULL,
     "activa" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL
 );
 
 -- CreateTable
@@ -56,11 +56,11 @@ CREATE TABLE "premios" (
     "nombre" TEXT NOT NULL,
     "descripcion" TEXT,
     "puntosRequeridos" INTEGER NOT NULL,
-    "valor" REAL NOT NULL,
+    "valor" DOUBLE PRECISION NOT NULL,
     "cantidad" INTEGER,
     "activo" BOOLEAN NOT NULL DEFAULT true,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL
 );
 
 -- CreateTable
@@ -69,8 +69,8 @@ CREATE TABLE "canjes" (
     "clienteId" TEXT NOT NULL,
     "premioId" TEXT NOT NULL,
     "estado" TEXT NOT NULL DEFAULT 'pendiente',
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     CONSTRAINT "canjes_clienteId_fkey" FOREIGN KEY ("clienteId") REFERENCES "clientes" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "canjes_premioId_fkey" FOREIGN KEY ("premioId") REFERENCES "premios" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
