@@ -137,7 +137,7 @@ export default function RegistroCliente() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden">
+      <div className="bg-white rounded-b-lg shadow-xl max-w-md w-full overflow-hidden">
         {/* Header - fondo NEGRO con logo dorado */}
         <div className="bg-black px-6 py-8 text-center rounded-t-lg border-2 border-black">
           {/*
