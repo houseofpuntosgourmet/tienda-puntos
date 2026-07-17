@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
 import QRCodeStyling from 'qr-code-styling'
+import api from '../api'
 
 export default function RegistroCliente() {
+  // URL absoluta de registro basada en el origen actual (funciona en dev y en producción)
+  const registroUrl = `${window.location.origin}/#registro`
+
   const [formData, setFormData] = useState({
     nombre: '',
     whatsapp: '549',
@@ -24,7 +27,7 @@ export default function RegistroCliente() {
       qrCodeRef.current = new QRCodeStyling({
         width: 256,
         height: 256,
-        data: 'http://localhost:3000/#registro',
+        data: registroUrl,
         margin: 10,
         qrOptions: {
           typeNumber: 0,
@@ -113,7 +116,7 @@ export default function RegistroCliente() {
       if (formData.email) payload.email = formData.email
       if (formData.cumpleaños) payload.cumpleaños = new Date(formData.cumpleaños).toISOString()
 
-      const response = await axios.post('http://localhost:3001/api/clientes/registro', payload)
+      const response = await api.post('/api/clientes/registro', payload)
 
       setClienteRegistrado(response.data)
       setSuccess(response.data.mensaje || 'Registro completado exitosamente')
@@ -292,8 +295,8 @@ export default function RegistroCliente() {
                 ref={qrContainerRef}
                 className="flex justify-center py-4"
               />
-              <p className="text-xs text-gray-500">
-                URL: http://localhost:3000/#registro
+              <p className="text-xs text-gray-500 break-all">
+                URL: {registroUrl}
               </p>
               <button
                 onClick={descargarQR}
