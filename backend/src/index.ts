@@ -82,6 +82,7 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 
 // Initialize scheduled jobs
-initCumpleañosJob();
+// TODO: Fix Prisma initialization before enabling
+// initCumpleañosJob();
 
 export default app;
