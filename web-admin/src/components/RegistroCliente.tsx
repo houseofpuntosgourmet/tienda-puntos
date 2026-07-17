@@ -141,22 +141,21 @@ export default function RegistroCliente() {
         {/* Header - fondo NEGRO con logo dorado */}
         <div className="bg-black px-6 py-8 text-center">
           {/*
-            LOGO: coloca el archivo en web-admin/public/logoconnombre.png
-            Se carga automáticamente desde /logoconnombre.png (raíz del sitio).
-            Si el archivo no existe, se oculta la imagen y se muestra el texto de respaldo.
+            LOGO: coloca el archivo en web-admin/public/logo-hp-v2.png
+            Se carga automáticamente desde /logo-hp-v2.png (raíz del sitio).
+            El PNG ya tiene fondo NEGRO (sin bordes blancos) para fundirse con el header.
+            Nombre versionado (-v2) para invalidar el cache del CDN/navegador.
+            Si el archivo no existe, se oculta la imagen.
           */}
-          <div className="mx-auto mb-4 inline-block">
-            <img
-              src="/logoconnombre.png"
-              alt="House of Panchos - Tienda de Puntos"
-              className="mx-auto max-h-24 w-auto object-contain"
-              onError={(e) => {
-                // Si el logo aún no fue subido, ocultar el contenedor de la imagen rota
-                const img = e.currentTarget as HTMLImageElement
-                if (img.parentElement) img.parentElement.style.display = 'none'
-              }}
-            />
-          </div>
+          <img
+            src="/logo-hp-v2.png"
+            alt="House of Panchos - Tienda de Puntos"
+            className="mx-auto mb-4 block max-h-24 w-auto object-contain"
+            onError={(e) => {
+              // Si el logo aún no fue subido, ocultar la imagen rota
+              e.currentTarget.style.display = 'none'
+            }}
+          />
           <h1
             className="text-4xl font-extrabold tracking-wide mb-2"
             style={{ color: '#FFD700' }}
