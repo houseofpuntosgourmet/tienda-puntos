@@ -150,7 +150,7 @@ export default function RegistroCliente() {
           <img
             src="/logo-hp-v2.png"
             alt="House of Panchos - Tienda de Puntos"
-            className="mx-auto mb-4 block max-h-40 w-auto object-contain shadow-none outline-none"
+            className="mx-auto mb-4 block max-h-40 w-auto object-contain ring-2 ring-yellow-400 rounded"
             onError={(e) => {
               // Si el logo aún no fue subido, ocultar la imagen rota
               e.currentTarget.style.display = 'none'
