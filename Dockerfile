@@ -15,8 +15,9 @@ RUN npm run build
 # Generate Prisma
 RUN npx prisma generate
 
-# Expose port
-EXPOSE 3001
+# Expose port (matches runtime PORT injected by Railway; Railway may seed the
+# public domain Target Port from this EXPOSE value on domain creation)
+EXPOSE 8080
 
 # Start with optional migration (if DATABASE_URL is set)
 CMD ["sh", "-c", "[ -z \"$DATABASE_URL\" ] || npx prisma migrate deploy; node dist/index.js"]
