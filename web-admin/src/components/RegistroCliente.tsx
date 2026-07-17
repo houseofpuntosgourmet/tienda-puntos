@@ -145,7 +145,7 @@ export default function RegistroCliente() {
             Se carga automáticamente desde /logoconnombre.png (raíz del sitio).
             Si el archivo no existe, se oculta la imagen y se muestra el texto de respaldo.
           */}
-          <div className="mx-auto mb-4 inline-block rounded-xl bg-white px-5 py-3 shadow-md">
+          <div className="mx-auto mb-4 inline-block">
             <img
               src="/logoconnombre.png"
               alt="House of Panchos - Tienda de Puntos"
