@@ -136,12 +136,36 @@ export default function RegistroCliente() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-indigo-600 px-6 py-8 text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">Tienda de Puntos</h1>
-          <p className="text-blue-100">Únete y empieza a ganar puntos</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden">
+        {/* Header - fondo NEGRO con logo dorado */}
+        <div className="bg-black px-6 py-8 text-center">
+          {/*
+            LOGO: coloca el archivo en web-admin/public/logoconnombre.png
+            Se carga automáticamente desde /logoconnombre.png (raíz del sitio).
+            Si el archivo no existe, se oculta la imagen y se muestra el texto de respaldo.
+          */}
+          <div className="mx-auto mb-4 inline-block rounded-xl bg-white px-5 py-3 shadow-md">
+            <img
+              src="/logoconnombre.png"
+              alt="House of Panchos - Tienda de Puntos"
+              className="mx-auto max-h-24 w-auto object-contain"
+              onError={(e) => {
+                // Si el logo aún no fue subido, ocultar el contenedor de la imagen rota
+                const img = e.currentTarget as HTMLImageElement
+                if (img.parentElement) img.parentElement.style.display = 'none'
+              }}
+            />
+          </div>
+          <h1
+            className="text-4xl font-extrabold tracking-wide mb-2"
+            style={{ color: '#FFD700' }}
+          >
+            Tienda de Puntos
+          </h1>
+          <p className="text-sm" style={{ color: '#F5D98B' }}>
+            Sumá puntos con cada compra y canjealos por premios exclusivos
+          </p>
         </div>
 
         {/* Contenido */}
