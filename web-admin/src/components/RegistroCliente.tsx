@@ -137,7 +137,7 @@ export default function RegistroCliente() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center p-4">
-      <div className="bg-white rounded-b-lg shadow-xl max-w-md w-full overflow-hidden">
+      <div className="bg-white rounded-b-lg shadow-sm max-w-md w-full overflow-hidden">
         {/* Header - fondo NEGRO con logo dorado */}
         <div className="bg-black px-6 py-8 text-center rounded-t-lg border-2 border-black">
           {/*
@@ -150,7 +150,7 @@ export default function RegistroCliente() {
           <img
             src="/logo-hp-v2.png"
             alt="House of Panchos - Tienda de Puntos"
-            className="mx-auto mb-4 block max-h-40 w-auto object-contain"
+            className="mx-auto mb-4 block max-h-40 w-auto object-contain shadow-none outline-none"
             onError={(e) => {
               // Si el logo aún no fue subido, ocultar la imagen rota
               e.currentTarget.style.display = 'none'
