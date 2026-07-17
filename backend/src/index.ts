@@ -77,8 +77,22 @@ app.use('/api/usuarios', usuariosRoutes);
 // Error handler (must be last)
 app.use(errorHandler);
 
-app.listen(PORT, '0.0.0.0', () => {
+logger.info(`About to listen on port ${PORT}`);
+const server = app.listen(PORT, '0.0.0.0', () => {
   logger.info(`Server running on port ${PORT}`);
+  logger.info('Server is ready to accept requests');
+});
+
+server.on('error', (err) => {
+  logger.error(`Server error: ${err.message}`);
+});
+
+process.on('uncaughtException', (err) => {
+  logger.error(`Uncaught exception: ${err.message}`);
+});
+
+process.on('unhandledRejection', (reason) => {
+  logger.error(`Unhandled rejection: ${reason}`);
 });
 
 // Initialize scheduled jobs
