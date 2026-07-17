@@ -18,5 +18,5 @@ RUN npx prisma generate
 # Expose port
 EXPOSE 3001
 
-# Start with migration
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
+# Start with optional migration (if DATABASE_URL is set)
+CMD ["sh", "-c", "[ -z \"$DATABASE_URL\" ] || npx prisma migrate deploy; node dist/index.js"]
