@@ -8,6 +8,7 @@ declare global {
 
 const databaseUrl = process.env.DATABASE_URL || 'file:./dev.db';
 
+// Create adapter with the database URL
 const adapter = new PrismaBetterSqlite3({
   url: databaseUrl,
 });
