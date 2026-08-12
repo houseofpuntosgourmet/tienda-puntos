@@ -5,3 +5,6 @@ dist/
 postgres_data/
 
 .vercel
+
+# respaldos de los lanzadores (12/08/2026)
+*.ps1.bak

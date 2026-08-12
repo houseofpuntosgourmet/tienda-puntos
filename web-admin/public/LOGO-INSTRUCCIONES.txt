@@ -1,0 +1,18 @@
+INSTRUCCIONES PARA EL LOGO
+==========================
+
+Coloca aquí el archivo del logo con el nombre EXACTO:
+
+    logoconnombre.png
+
+Ruta completa:
+    web-admin/public/logoconnombre.png
+
+El componente RegistroCliente.tsx lo carga automáticamente desde la raíz del sitio
+(URL: /logoconnombre.png). No hace falta importarlo ni tocar código.
+
+Si el archivo no existe, el formulario muestra un texto de respaldo "House of Panchos"
+en dorado y todo sigue funcionando igual.
+
+Formato recomendado: PNG con fondo transparente, logo en dorado brillante (#FFD700),
+ancho aproximado 400-600px.
