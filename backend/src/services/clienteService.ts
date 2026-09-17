@@ -82,6 +82,8 @@ export class ClienteService {
       where: {
         nombre: {
           contains: nombre,
+          // En Postgres contains distingue mayúsculas (en SQLite no)
+          mode: 'insensitive',
         },
       },
     });

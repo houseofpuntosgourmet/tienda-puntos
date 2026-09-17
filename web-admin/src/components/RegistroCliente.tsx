@@ -128,8 +128,13 @@ export default function RegistroCliente() {
         cumpleaños: '',
       })
     } catch (err: any) {
-      const errorMsg = err.response?.data?.error || err.response?.data?.message || 'Error al registrarse'
-      setError(errorMsg)
+      if (!err.response) {
+        setError('No pudimos conectar con el servidor. Probá de nuevo en un rato.')
+      } else if (err.response.data?.error === 'Validation error') {
+        setError('Revisá los datos ingresados e intentá de nuevo.')
+      } else {
+        setError(err.response.data?.error || err.response.data?.message || 'Error al registrarse')
+      }
     } finally {
       setLoading(false)
     }

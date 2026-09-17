@@ -9,4 +9,4 @@ restartPolicyMaxRetries = 5
 
 [env]
 NODE_ENV = "production"
-JWT_SECRET = "super-secret-key-change-this"
+# JWT_SECRET no va en el repo: se carga como variable de entorno en la plataforma.

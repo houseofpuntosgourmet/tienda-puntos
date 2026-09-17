@@ -77,10 +77,10 @@ export class ReportesService {
     const clientes = await prisma.cliente.findMany({
       where: {
         OR: [
-          { nombre: { contains: termino } },
+          { nombre: { contains: termino, mode: 'insensitive' } },
           { whatsapp: { contains: termino } },
           { dni: { contains: termino } },
-          { email: { contains: termino } },
+          { email: { contains: termino, mode: 'insensitive' } },
         ],
       },
       include: {

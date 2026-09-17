@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
-import app from '../index';
+import app from '../app';
 import prisma from '../config/database';
 import { signToken } from '../config/jwt';
 import bcryptjs from 'bcryptjs';
