@@ -1,6 +1,6 @@
 // La app de Express, sin app.listen: Vercel la toma de acá como función
 // (detecta src/app.ts y usa el export default). Para correrla en local, src/index.ts.
-import 'dotenv/config';
+import './config/env';
 
 import express from 'express';
 import cors from 'cors';

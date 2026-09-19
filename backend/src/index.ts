@@ -1,5 +1,5 @@
 // Servidor para correr en local (npm run dev). En Vercel no se usa: la función sale de src/app.ts.
-import 'dotenv/config';
+import './config/env';
 
 import app from './app';
 import logger from './utils/logger';
