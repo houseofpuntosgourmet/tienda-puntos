@@ -2,6 +2,31 @@ import { useState, useEffect, useRef } from 'react'
 import QRCodeStyling from 'qr-code-styling'
 import api from '../api'
 
+// Nombres de campo en castellano, para poder decir CUAL dato esta mal en vez de un
+// "revisa los datos" que no le sirve a nadie. Las claves son las del schema del backend.
+const ETIQUETAS_CAMPOS: Record<string, string> = {
+  nombre: 'Nombre completo',
+  whatsapp: 'WhatsApp',
+  dni: 'DNI',
+  email: 'Email',
+  cumpleaños: 'Cumpleaños',
+}
+
+// El backend devuelve los errores de validacion con el formato de Zod:
+// { error: 'Validation error', details: { dni: { _errors: [...] }, ... } }
+function mensajeDeValidacion(details: any): string {
+  const generico = 'Revisá los datos ingresados e intentá de nuevo.'
+  if (!details) return generico
+
+  const campos = Object.keys(details)
+    .filter((clave) => clave !== '_errors' && details[clave]?._errors?.length)
+    .map((clave) => ETIQUETAS_CAMPOS[clave] ?? clave)
+
+  if (campos.length === 0) return generico
+  if (campos.length === 1) return `Revisá el campo ${campos[0]}.`
+  return `Revisá estos campos: ${campos.join(', ')}.`
+}
+
 export default function RegistroCliente() {
   // URL absoluta de registro basada en el origen actual (funciona en dev y en producción)
   const registroUrl = `${window.location.origin}/#registro`
@@ -131,7 +156,7 @@ export default function RegistroCliente() {
       if (!err.response) {
         setError('No pudimos conectar con el servidor. Probá de nuevo en un rato.')
       } else if (err.response.data?.error === 'Validation error') {
-        setError('Revisá los datos ingresados e intentá de nuevo.')
+        setError(mensajeDeValidacion(err.response.data?.details))
       } else {
         setError(err.response.data?.error || err.response.data?.message || 'Error al registrarse')
       }
