@@ -8,3 +8,7 @@ postgres_data/
 
 # respaldos de los lanzadores (12/08/2026)
 *.ps1.bak
+
+# Python (scripts/)
+__pycache__/
+*.pyc
